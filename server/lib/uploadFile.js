@@ -1,9 +1,11 @@
 var tj = require("togeojson"),
-  fs =  require("fs"),
-  jsdom = require("jsdom").jsdom,
-  multipart = require("multipart"),
-  sys = require("sys"),
-  request = require('request');
+    fs =  require("fs"),
+    jsdom = require("jsdom").jsdom,
+    multipart = require("multipart"),
+    sys = require("sys"),
+    config = require('../config'),
+    request = require('request'),
+    api = require('../services/api');
 
 module.exports = function(req, res, next) {
 
@@ -28,20 +30,23 @@ module.exports = function(req, res, next) {
     if (err) throw err;
     console.log('successfully deleted' + tmp_path);
   });
+    
+  console.log("About to Print the api header info...........");
 
-  console.log("About to Print the Body...........");
-
-
-  console.log("This is what is going into the body: " + JSON.stringify( { "projectName" : projName, "geoJSON": converted } ));
+//  for(key in req.cookies) {
+//    console.log("here's the cookie: " + key + " with value: " + req.cookies[key]);
+//  }
+//  console.log("here's the cookie: " + req.cookies);
 
   request.post({
-    headers: {'content-type' : 'application/json'},
-    url:     'http://localhost:9200/geotagger/jobmaps',
+    headers: { "Authorization": req.cookies.OAuthToken, "X-Mypsn-AppKey": "ebe1210c8a99da9dd8793e1b3cc6ed14", "Accept": "application/json" },
+    //headers: { api.ropt.headers },
+    url:     'https://api.mypsn.com/v1/poma/geotagger/jobmaps',
     body:    JSON.stringify( { "projectName" : projName, "geoJSON": converted } )
   }, function(error, response, body){
-    console.log("This is the body:  " + body);
-    console.log("This is the response:  " + response);
-    console.log("This is the error:  " + error);
+//    console.log("This is the body:  " + body);
+//    console.log("This is the response:  " + response);
+//    console.log("This is the error:  " + error);
   });
 
   res.redirect('#/upload');
