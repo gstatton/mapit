@@ -8,7 +8,10 @@
     "togeojson": "~0.1.1",
     "jsdom": "*",
     "multipart": "*",
-    "request":"*"
+    "request":"*",
+    "grunt": "*",
+    "grunt-contrib": "*",
+    "less": "*"
   },
   "devDependencies": {
     "jaded": "*",
